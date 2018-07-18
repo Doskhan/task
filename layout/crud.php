@@ -1,13 +1,25 @@
 <?php
-  include 'User.php';
+  include '../User.php';
   include 'header.php';
   Session::checkSession();
 ?>
 
 <?php 
   $type = Session::get("type");
+  $user = new User();
+      
+ if (isset($_GET['action']) && $_GET['action'] == 'delete') {
+    # code...
+    $userDel = $user->userDelete($_GET['id']);
+    // header("Location: index.php");
 
-    
+  }
+ ?>
+ <?php 
+  if (isset($userDel)) {
+    # code...
+    echo $userDel;
+  }
  ?>
 <div class="col-sm-1"></div>
 <div class="col-sm-10">
@@ -21,12 +33,12 @@
       <th>Email</th>
       
       <th>Action</th>
-      <th>Action</th>
+     
       
     </tr>
     <?php 
 
-      $user = new User();
+      
       $userData = $user->getAll();
       if ($userData) {
         # code...
@@ -42,12 +54,17 @@
       <td><?php echo $data["email"]; ?></td>
       <?php 
         
-        if ($user->isAdmin($type) | $id == $data["id"]) {
+        if ($user->isAdmin($type) ) {
           # code...
        ?>
       <td><a class="btn btn-info" href="single.php?id=<?php echo $data["id"]; ?>">Edit</a></button></td>
-      <td><a class="btn btn-danger" href="single.php?id=<?php echo $data["id"]; ?>">Delete</a></button></td>
+      <td><a class="btn btn-danger" href="?action=delete&id=<?php echo $data["id"]; ?>">Delete</a></button></td>
         <?php 
+          }
+          elseif ($id == $data["id"]) { ?>
+            
+            <td><a class="btn btn-info" href="single.php?id=<?php echo $data["id"]; ?>">Edit</a></button></td>
+            <?php
           }
          ?>
 
@@ -59,17 +76,7 @@
       <tr><td colspan="5"><h2>No User Data Found</h2></td></tr>
       <?php } ?>
 
-     <?php 
-        
-        if ($user->isAdmin($type)) {
-          # code...
-        
-       ?>
-
-    <tr><th>
-      <button class="btn btn-success" type="submit">Add</button></th></tr>
-<?php } ?>
-      
+     
   </table>
 </div>
 </div>

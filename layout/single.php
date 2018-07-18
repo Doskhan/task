@@ -1,5 +1,5 @@
 <?php 
-include 'User.php';
+include '../User.php';
 include 'header.php'; 
 Session::checkSession();
 ?>
@@ -9,10 +9,15 @@ Session::checkSession();
     $userID = (int)$_GET['id'];
   }
   $user = new User();
-
+  // handle update
   if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     # code...
     $userUpdate = $user->userUpdate($userID,$_POST); 
+  }
+  // handle delete
+  if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
+    # code...
+    $userUpdate = $user->userDelete($userID); 
   }
  ?>
 
@@ -53,15 +58,21 @@ Session::checkSession();
   <?php 
 
     $sisID = Session::get("id");
-    if ($userID == $sisID) {
+    $type = Session::get("type");
+    if ($user->isAdmin($type) ) {
+          # code...
+       ?>
+      <button type="submit" name="update" class="btn btn-info">Update</button>
+      <button type="submit" name="delete" class="btn btn-danger">Delete</button>
+<?php 
+          }
+          elseif ($sisID == $userID) { ?>
+            <button type="submit" name="update" class="btn btn-info">Update</button>
+            
+            <?php
+          }
+         ?>
 
-   ?>
-      <button type="submit" name="update" class="btn btn-default">Update</button>
-
-  <?php 
-    }
-
-   ?>
   
 </form> 
 <?php 

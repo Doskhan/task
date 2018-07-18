@@ -1,6 +1,6 @@
 <?php 
+  include '../User.php';
   include 'header.php';
-  include 'User.php';
   $user = new User();
  ?>
 
@@ -22,8 +22,16 @@
   if (isset($name)) {
     # code...
     echo $name;
-  }
+  
   ?> !</h1>
+  <?php 
+
+    }else{
+
+
+   ?>
+   <p>pls, log in or register</p>
+   <?php } ?>
 
 	</div>
 	<div class="col-sm-2"></div>

@@ -23,14 +23,13 @@
 				$email = $data['email'];
 				$password = md5($data['password']);
 
-				if ($name == "" OR $email == "" OR $password == "") {
-					# code...
-					$msg = "<div class='alert alert-danger'>Empty</div>";
-					return $msg;
-					
-				}
+				// validation
 
-				 
+				if ($name == "" OR $email == "" OR $password == "" OR $phone == "") {
+					# code...
+					$msg = "<div class='alert alert-danger'>must not be Empty</div>";
+					return $msg;
+				}
 
 				if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
 				
@@ -39,7 +38,7 @@
 					return $msg;
 				}
 
-
+				// registration query
 				$sql = "INSERT INTO users (name, phone, email, password,type) VALUES (:name, :phone, :email, :password, 0)";
 				$query = $this->db->pdo->prepare($sql);
 				$query->bindValue(':name', $name);
@@ -58,19 +57,6 @@
 				}
 			}
 
-			public function getLoginUser($email,$password)
-			{
-				# code...
-				$sql = "SELECT * FROM users WHERE email=:email AND password=:password";
-				$query = $this->db->pdo->prepare($sql);
-				
-				$query->bindValue(':email', $email);
-				$query->bindValue(':password', $password);
-				$query->execute();
-				$result = $query->fetch(PDO::FETCH_OBJ);
-				return $result;
-
-			}
 
 			public function getAll()
 			{
@@ -116,7 +102,15 @@
 				}
 
 				
-				$result = $this->getLoginUser($email,$password);
+				
+				$sql = "SELECT * FROM users WHERE email=:email AND password=:password";
+				$query = $this->db->pdo->prepare($sql);
+				
+				$query->bindValue(':email', $email);
+				$query->bindValue(':password', $password);
+				$query->execute();
+				$result = $query->fetch(PDO::FETCH_OBJ);
+				
 				 
 				if ($result) {
 					# code...
@@ -136,15 +130,23 @@
 				}
 			}
 
-			public function userDelete($data)
+			public function userDelete($id)
 			{
 				# code...
-				$id = $data['id'];
+				
 				$sql = "DELETE FROM users WHERE ID=:id";
 				$query = $this->db->pdo->prepare($sql);
-				$query->execute();
-				$result = $query->fetchAll();
-				return $result;
+				$query->bindValue(':id', $id);
+
+				$result = $query->execute();
+				if ($result) {
+					# code...
+					$msg = "<div class='alert alert-success'>Successfully Deleted!</div>";
+					return $msg;
+					header("Location: index.php");
+				}else{
+					return "<div class='alert alert-success'>Error!</div>";
+				}
 			}
 
 			public function userUpdate($id,$data)

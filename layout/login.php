@@ -1,6 +1,6 @@
 <?php 
+  include '../User.php';
   include 'header.php';
-  include 'User.php';
   Session::checkLogin();
  ?>
 
@@ -11,9 +11,7 @@
     # code...
     $userLog = $user->userLogin($_POST); 
   }
- ?>
-
-<?php 
+  
   if (isset($userLog)) {
     # code...
     echo $userLog;
