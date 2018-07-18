@@ -1,12 +1,11 @@
 <?php
-  include 'header.php';
   include 'User.php';
+  include 'header.php';
   Session::checkSession();
-  $user = new User();
 ?>
 
 <?php 
-  
+  $type = Session::get("type");
 
     
  ?>
@@ -20,8 +19,10 @@
       <th>Name</th>
       <th>Phone</th>
       <th>Email</th>
+      
       <th>Action</th>
       <th>Action</th>
+      
     </tr>
     <?php 
 
@@ -35,13 +36,21 @@
      ?>
     
     <tr>
-      <td><?php echo $data['ID']; ?></td>
+      <td><?php echo $data['id']; ?></td>
       <td><?php echo $data['name']; ?></td>
       <td><?php echo $data["phone"]; ?></td>
       <td><?php echo $data["email"]; ?></td>
-      <td><a class="btn btn-info" href="?action=edit?id=<?php echo $data["id"]; ?>">Edit</a></button></td>
+      <?php 
+        
+        if ($user->isAdmin($type) | $id == $data["id"]) {
+          # code...
+       ?>
+      <td><a class="btn btn-info" href="single.php?id=<?php echo $data["id"]; ?>">Edit</a></button></td>
+      <td><a class="btn btn-danger" href="single.php?id=<?php echo $data["id"]; ?>">Delete</a></button></td>
+        <?php 
+          }
+         ?>
 
-      <td><a class="btn btn-danger" href="?action=delete?id=<?php echo $data["id"]; ?>">Delete</a></button></td>
     </tr>
 
     <?php 
@@ -50,15 +59,17 @@
       <tr><td colspan="5"><h2>No User Data Found</h2></td></tr>
       <?php } ?>
 
-     
+     <?php 
+        
+        if ($user->isAdmin($type)) {
+          # code...
+        
+       ?>
 
-    <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th><button class="btn btn-success" type="submit">Add</button></th></tr>
+    <tr><th>
+      <button class="btn btn-success" type="submit">Add</button></th></tr>
+<?php } ?>
+      
   </table>
 </div>
 </div>

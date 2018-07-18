@@ -44,10 +44,11 @@
         
       </ul>
       
-      <ul class="nav navbar-nav navbar-right"><li><a>
+      <ul class="nav navbar-nav navbar-right"><li><a href="single.php?id=<?php $id = Session::get("id"); echo $id;?>">
  <?php 
-
+ 
   $name = Session::get("name");
+  $userLogin = Session::get("login");
   if (isset($name)) {
     # code...
     echo $name;
@@ -59,11 +60,11 @@
         
         <?php 
 
-        	$id = Session::get("id");
-        	$userLogin = Session::get("login");
+        	
+        	
         	if ($userLogin == true) {
         	?>
-        		<li><a href="single.php?id="<?php echo $id;?>>Profile</a></li>
+        		
         		<li><a href="?action=logout">Logout</a></li>
         	<?php  }?>
 

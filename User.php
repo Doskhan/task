@@ -40,7 +40,7 @@
 				}
 
 
-				$sql = "INSERT INTO users (name, phone, email, password) VALUES (:name, :phone, :email, :password)";
+				$sql = "INSERT INTO users (name, phone, email, password,type) VALUES (:name, :phone, :email, :password, 0)";
 				$query = $this->db->pdo->prepare($sql);
 				$query->bindValue(':name', $name);
 				$query->bindValue(':phone', $phone);
@@ -84,6 +84,17 @@
 
 			}
 
+			public function getUserById($userID)
+			{
+				# code...
+				$sql = "SELECT * FROM users WHERE id=:id";
+				$query = $this->db->pdo->prepare($sql);
+				$query->bindValue(':id', $userID);
+				$query->execute();
+				$result = $query->fetch(PDO::FETCH_OBJ);
+				return $result;
+
+			}
 
 			public function userLogin($data)
 			{ 
@@ -104,21 +115,19 @@
 					return $msg;
 				}
 
-				$sql = "SELECT * FROM users WHERE email=:email AND password=:password";
-				$query = $this->db->pdo->prepare($sql);
 				
-				$query->bindValue(':email', $email);
-				$query->bindValue(':password', $password);
-				$result = $query-> execute();
 				$result = $this->getLoginUser($email,$password);
 				 
 				if ($result) {
 					# code...
 					Session::init();
 					Session::set("login",true);
+					
 					Session::set("id",$result->id);
 					Session::set("name",$result->name);
 					Session::set("email",$result->email);
+					Session::set("type",$result->type);
+
 					Session::set("loginmsg","<div class='alert alert-success'>Successfully logged in!</div>");
 					header("Location: index.php");
 				}else{
@@ -138,19 +147,41 @@
 				return $result;
 			}
 
-			public function userEdit($data)
+			public function userUpdate($id,$data)
 			{
 				# code...
-				$id = $data['id'];
+				
 				$name = $data['name'];
 				$phone = $data['phone'];
 				$email = $data['email'];
-				$password = md5($data['password']);
-				$sql = "UPDATE users SET name=:name, phone=:phone, email=:email, password=:password) WHERE id=:id";
+				
+				$sql = "UPDATE users SET name=:name, phone=:phone, email=:email WHERE id=:id";
 				$query = $this->db->pdo->prepare($sql);
-				$query->execute();
-				$result = $query->fetchAll();
-				return $result;
+				$query->bindValue(':id', $id);
+				$query->bindValue(':name', $name);
+				$query->bindValue(':phone', $phone);
+				$query->bindValue(':email', $email);
+				$result = $query->execute();
+				
+				if ($result) {
+					# code...
+					$msg = "<div class='alert alert-success'>Successfully Updated!</div>";
+					return $msg;
+				}else{
+					return "<div class='alert alert-success'>Error!</div>";
+				}
+			}
+
+			public function isAdmin($type)
+			{
+				# code...
+				if ($type == 1) {
+					# code...
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
 		}	
 
