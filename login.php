@@ -1,21 +1,38 @@
-<?php include 'header.php'; ?>
+<?php 
+  include 'header.php';
+  include 'User.php';
+ ?>
+
+
+ <?php 
+  $user = new User();
+  if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
+    # code...
+    $userLog = $user->userLogin($_POST); 
+  }
+ ?>
+
+<?php 
+  if (isset($userLog)) {
+    # code...
+    echo $userLog;
+  }
+ ?>
+
 <div class="row">
 	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
-		<form action="/action_page.php" method="POST">
+		<form action="" method="POST">
   <div class="form-group">
     <label for="email">Email address:</label>
-    <input type="email" class="form-control" id="email">
+    <input type="email" class="form-control" name="email" id="email">
   </div>
   <div class="form-group">
-    <label for="pwd">Password:</label>
-    <input type="password" class="form-control" id="pwd">
+    <label for="password">Password:</label>
+    <input type="password" class="form-control" id="password" name="password">
   </div>
   
-  <div class="checkbox">
-    <label><input type="checkbox"> Remember me</label>
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
+  <button type="submit" name="login" class="btn btn-default">Submit</button>
 </form> 
 
 	</div>

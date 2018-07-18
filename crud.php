@@ -1,6 +1,9 @@
 <?php
   include 'header.php';
 ?>
+<div class="col-sm-1"></div>
+<div class="col-sm-10">
+
 <div class="table-responsive">
   <table class="table">
     <tr>
@@ -30,6 +33,8 @@
       <th><button class="btn btn-success" type="submit">Add</button></th></tr>
   </table>
 </div>
+</div>
+<div class="col-sm-1"></div>
 
 
  
