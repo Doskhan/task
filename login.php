@@ -1,6 +1,7 @@
 <?php 
   include 'header.php';
   include 'User.php';
+  Session::checkLogin();
  ?>
 
 

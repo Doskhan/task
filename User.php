@@ -72,6 +72,18 @@
 
 			}
 
+			public function getAll()
+			{
+				# code...
+				$sql = "SELECT * FROM users";
+				$query = $this->db->pdo->prepare($sql);
+				$query->execute();
+				$result = $query->fetchAll();
+				return $result;
+
+
+			}
+
 
 			public function userLogin($data)
 			{ 
@@ -98,16 +110,6 @@
 				$query->bindValue(':email', $email);
 				$query->bindValue(':password', $password);
 				$result = $query-> execute();
-				// if ($result) {
-				// 	# code...
-				// 	$msg = "<div class='alert alert-success'>asd</div>";
-				// 	return $msg;
-				// }
-				// else{
-				// 	$msg = "<div class='alert alert-danger'>Error while logging</div>";
-				// 	return $msg;
-				// }
-
 				$result = $this->getLoginUser($email,$password);
 				 
 				if ($result) {
@@ -124,7 +126,34 @@
 					return $msg;
 				}
 			}
+
+			public function userDelete($data)
+			{
+				# code...
+				$id = $data['id'];
+				$sql = "DELETE FROM users WHERE ID=:id";
+				$query = $this->db->pdo->prepare($sql);
+				$query->execute();
+				$result = $query->fetchAll();
+				return $result;
+			}
+
+			public function userEdit($data)
+			{
+				# code...
+				$id = $data['id'];
+				$name = $data['name'];
+				$phone = $data['phone'];
+				$email = $data['email'];
+				$password = md5($data['password']);
+				$sql = "UPDATE users SET name=:name, phone=:phone, email=:email, password=:password) WHERE id=:id";
+				$query = $this->db->pdo->prepare($sql);
+				$query->execute();
+				$result = $query->fetchAll();
+				return $result;
+			}
 		}	
+
 
 
  ?>

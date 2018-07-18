@@ -38,6 +38,34 @@
 			return false;
 		}
 	}
+
+	public static function checkSession()
+	{
+		# code...
+		if (self::get("login") == false) {
+			# code...
+			self::destroy();
+			header("Location: login.php");
+		}
+	}
+	public static function checkLogin()
+	{
+		# code...
+		if (self::get("login") == true) {
+			# code...
+			// self::destroy();
+			header("Location: index.php");
+		}
+	}
+
+	public static function destroy()
+	{
+		# code...
+		session_destroy();
+		session_unset();
+		header("Location: login.php");
+	}
+
 	}
 
  ?>

@@ -8,8 +8,18 @@
 <head>
 	<title>Registration</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	
+	<script type="text/javascript" src="js/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script> 
 </head>
+
+<?php 
+
+	if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+		# code...
+		Session::destroy();
+	}
+ ?>
 <body>
 	<div class="container">
 	<nav class="navbar navbar-default">
@@ -46,7 +56,18 @@
       	
 
    </a></li>
-        <li><a href="#">Logout</a></li>
+        
+        <?php 
+
+        	$id = Session::get("id");
+        	$userLogin = Session::get("login");
+        	if ($userLogin == true) {
+        	?>
+        		<li><a href="single.php?id="<?php echo $id;?>>Profile</a></li>
+        		<li><a href="?action=logout">Logout</a></li>
+        	<?php  }?>
+
+         
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
